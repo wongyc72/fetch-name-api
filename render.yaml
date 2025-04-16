@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: fetch-name-api
+    env: python
+    buildCommand: ""
+    startCommand: gunicorn fetch_name_api:app
