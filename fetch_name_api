@@ -1,0 +1,38 @@
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+import mysql.connector
+
+app = Flask(__name__)
+CORS(app)  # Remove this line if you're not calling from a browser/JS
+
+@app.route('/get_name', methods=['GET'])
+def get_name():
+    phone = request.args.get('phone')
+    if not phone:
+        return jsonify({"error": "Missing phone parameter"}), 400
+
+    try:
+        # Connect to your MySQL database
+        conn = mysql.connector.connect(
+            host="localhost",
+            user="quotjtfg_qpalm",
+            password="password!@###123",
+            database="quotjtfg_QPalm2"
+        )
+        cursor = conn.cursor()
+        cursor.execute("SELECT name FROM customers WHERE phone = %s", (phone,))
+        result = cursor.fetchone()
+        conn.close()
+
+        # Check and return the name
+        if result and result[0] and result[0].strip():
+            return jsonify({"name": result[0].strip()})
+        else:
+            return jsonify({"name": "Customer"})  # fallback
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5050)
