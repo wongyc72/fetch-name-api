@@ -17,7 +17,7 @@ def get_name():
             host="localhost",
             user="quotjtfg_qpalm",
             password="password!@###123",
-            database="quotjtfg_QPalm2"
+            database="quotjtfg_QPalm2adf"
         )
         cursor = conn.cursor()
         cursor.execute("SELECT name FROM customers WHERE phone = %s", (phone,))
